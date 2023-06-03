@@ -1,0 +1,103 @@
+using System;
+using System.Collections.Generic;
+
+namespace TaskManagementApp
+{
+    class Task
+    {
+        public string Description { get; set; }
+        public bool IsCompleted { get; set; }
+
+        public Task(string description)
+        {
+            Description = description;
+            IsCompleted = false;
+        }
+    }
+
+    class TaskManager
+    {
+        private List<Task> tasks;
+
+        public TaskManager()
+        {
+            tasks = new List<Task>();
+        }
+
+        public void AddTask(string description)
+        {
+            Task newTask = new Task(description);
+            tasks.Add(newTask);
+            Console.WriteLine("Task added successfully.");
+        }
+
+        public void CompleteTask(int index)
+        {
+            if (index >= 0 && index < tasks.Count)
+            {
+                Task task = tasks[index];
+                task.IsCompleted = true;
+                Console.WriteLine("Task marked as completed.");
+            }
+            else
+            {
+                Console.WriteLine("Invalid task index.");
+            }
+        }
+
+        public void DisplayTasks()
+        {
+            Console.WriteLine("Task List:");
+            for (int i = 0; i < tasks.Count; i++)
+            {
+                Task task = tasks[i];
+                string status = task.IsCompleted ? "[x]" : "[ ]";
+                Console.WriteLine($"{i + 1}. {status} {task.Description}");
+            }
+        }
+    }
+
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            TaskManager taskManager = new TaskManager();
+
+            bool exit = false;
+            while (!exit)
+            {
+                Console.WriteLine("\n=== Task Management Application ===");
+                Console.WriteLine("1. Add Task");
+                Console.WriteLine("2. Complete Task");
+                Console.WriteLine("3. Display Tasks");
+                Console.WriteLine("4. Exit");
+                Console.Write("Enter your choice: ");
+                string choice = Console.ReadLine();
+
+                switch (choice)
+                {
+                    case "1":
+                        Console.Write("Enter task description: ");
+                        string description = Console.ReadLine();
+                        taskManager.AddTask(description);
+                        break;
+                    case "2":
+                        Console.Write("Enter task index to mark as completed: ");
+                        int index = int.Parse(Console.ReadLine()) - 1;
+                        taskManager.CompleteTask(index);
+                        break;
+                    case "3":
+                        taskManager.DisplayTasks();
+                        break;
+                    case "4":
+                        exit = true;
+                        Console.WriteLine("Exiting...");
+                        break;
+                    default:
+                        Console.WriteLine("Invalid choice. Please try again.");
+                        break;
+                }
+            }
+        }
+    }
+}
